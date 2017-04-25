@@ -101,7 +101,7 @@
 闭包介绍Swift强大的特性之一就是提供了简洁的一等函数/闭包语法，用来替代之前十分复杂的block语法，所以希望我们以后在Swift中不要再使用类似fuckingblocksyntax的语法
 闭包是一个自包含的代码块，能够在代码中传递和使用
 在本章节中，我们先将重点放在匿名定义的闭包">
-<meta property="og:updated_time" content="2017-04-21T06:41:25.000Z">
+<meta property="og:updated_time" content="2017-04-25T08:45:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="(译)高阶函数:Map，Filter，Reduce等">
 <meta name="twitter:description" content="原文: Higher Order Functions: Map,Filter,Reduce and more
@@ -368,7 +368,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">averageOfFunction(3， 4， &#123;$0 * $0&#125;)</div></pre></td></tr></table></figure>
 <p>接下来整篇我们将使用最后这种闭包表达式，实际编码中如果要求清晰明了，建议使用命名闭包。</p>
 <p>把闭包作为参数传递而非重复代码，这个编程方式极大地提高了代码的表达能力，同时避免了简单复制和黏贴代码带来的的错误</p>
-<h4 id="数组操作"><a href="#数组操作" class="headerlink" title="数组操作"></a>数组操作</h4><p>Swift的标准函数库中默认包含支持了三个高阶函数: map， filter 和 reduce，OC的NSAarry缺少这样的支持，但能通过开源项目<a href="xxx">Open Source Community stepped in to address these shortcomings</a>达到一样的效果</p>
+<h4 id="数组操作"><a href="#数组操作" class="headerlink" title="数组操作"></a>数组操作</h4><p>Swift的标准函数库中默认包含支持了三个高阶函数: map， filter 和 reduce，OC的NSAarry缺少这样的支持，但能通过<a href="https://github.com/stuartervine/OCTotallyLazy" target="_blank" rel="external">开源项目</a>达到一样的效果</p>
 <h5 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h5><p>map函数主要用来对每个数组元素通过某个方法进行转换 </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[ x1， x2， ... ， xn].map(f) -&gt; [f(x1)， f(x2)， ... ， f(xn)]</div></pre></td></tr></table></figure>
 <p>现在我们有一个存储一些钱数的int数组，现在想要对数组中每个钱数后拼接一个“€”符号，从而得到一个新的字符串数组</p>

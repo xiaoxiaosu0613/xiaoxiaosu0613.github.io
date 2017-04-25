@@ -359,7 +359,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">averageOfFunction(3， 4， &#123;$0 * $0&#125;)</div></pre></td></tr></table></figure>
 <p>接下来整篇我们将使用最后这种闭包表达式，实际编码中如果要求清晰明了，建议使用命名闭包。</p>
 <p>把闭包作为参数传递而非重复代码，这个编程方式极大地提高了代码的表达能力，同时避免了简单复制和黏贴代码带来的的错误</p>
-<h4 id="数组操作"><a href="#数组操作" class="headerlink" title="数组操作"></a>数组操作</h4><p>Swift的标准函数库中默认包含支持了三个高阶函数: map， filter 和 reduce，OC的NSAarry缺少这样的支持，但能通过开源项目<a href="xxx">Open Source Community stepped in to address these shortcomings</a>达到一样的效果</p>
+<h4 id="数组操作"><a href="#数组操作" class="headerlink" title="数组操作"></a>数组操作</h4><p>Swift的标准函数库中默认包含支持了三个高阶函数: map， filter 和 reduce，OC的NSAarry缺少这样的支持，但能通过<a href="https://github.com/stuartervine/OCTotallyLazy" target="_blank" rel="external">开源项目</a>达到一样的效果</p>
 <h5 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h5><p>map函数主要用来对每个数组元素通过某个方法进行转换 </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[ x1， x2， ... ， xn].map(f) -&gt; [f(x1)， f(x2)， ... ， f(xn)]</div></pre></td></tr></table></figure>
 <p>现在我们有一个存储一些钱数的int数组，现在想要对数组中每个钱数后拼接一个“€”符号，从而得到一个新的字符串数组</p>
