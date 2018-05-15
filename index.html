@@ -470,108 +470,21 @@
 
       
         
-          
-            <blockquote>
-<p>原文: <a href="https://www.weheartswift.com/higher-order-functions-map-filter-reduce-and-more/" target="_blank" rel="external">Higher Order Functions: Map,Filter,Reduce and more</a></p>
+          <blockquote>
+<p>原文: <a href="https://www.weheartswift.com/higher-order-functions-map-filter-reduce-and-more/">Higher Order Functions: Map,Filter,Reduce and more</a></p>
 </blockquote>
-<h4 id="闭包介绍"><a href="#闭包介绍" class="headerlink" title="闭包介绍"></a>闭包介绍</h4><p>Swift强大的特性之一就是提供了简洁的一等函数/闭包语法，用来替代之前十分复杂的block语法，所以希望我们以后在Swift中不要再使用类似<a href="http://fuckingblocksyntax.com/" target="_blank" rel="external">fuckingblocksyntax</a>的语法</p>
+<h4 id="闭包介绍"><a href="#闭包介绍" class="headerlink" title="闭包介绍"></a>闭包介绍</h4><p>Swift强大的特性之一就是提供了简洁的一等函数/闭包语法，用来替代之前十分复杂的block语法，所以希望我们以后在Swift中不要再使用类似<a href="http://fuckingblocksyntax.com/">fuckingblocksyntax</a>的语法</p>
 <p>闭包是一个自包含的代码块，能够在代码中传递和使用</p>
 <p>在本章节中，我们先将重点放在匿名定义的闭包上(即是内联函数且不具名)，也称作匿名闭包，我们可以像参数一样传递闭包，也可以把闭包当做返回值返回。闭包是极其强大的语言特性，能让我们编程更迅速，更简便，更少出错</p>
 <p>闭包/Block(两种叫法意义一样)广泛应用于Cocoa和Cocoa Touch 中，是iOS frameworks 的核心</p>
-<p>先让我们看一些例子，来了解为啥闭包如此有用</p>
-<p>现在我们需要两个函数.一个用来求两个数的平方和的平均值，一个用来求2个数的立方和的平均值，一般写法将如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">func square(a:Float) -&gt; Float &#123;</div><div class="line">return a * a</div><div class="line">&#125;</div><div class="line">func cube(a:Float) -&gt; Float &#123;</div><div class="line">return a * a * a</div><div class="line">&#125;</div><div class="line"></div><div class="line">func averageSumOfSquares(a:Float，b:Float) -&gt; Float &#123;</div><div class="line">return (square(a) + square(b)) / 2.0</div><div class="line">&#125;</div><div class="line"></div><div class="line">func averageSumOfCubes(a:Float，b:Float) -&gt; Float &#123;</div><div class="line">return (cube(a) + cube(b)) / 2.0</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>不难观察出，在averageSumOfSquares 和 averageSumOfCubes函数中唯一不同的就是分别调用square/cube方法。如果我们可以定义一个通用函数，这个函数接收两个数字参数和一个使用这两个数字来求平均值的函数参数，用来代替重复调用，这将会更好.这种时候我们可以使用闭包作为参数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">func averageOfFunction(a:Float，b:Float，f:(Float -&gt; Float)) -&gt; Float &#123;</div><div class="line">return (f(a) + f(b)) / 2</div><div class="line">&#125;</div><div class="line"></div><div class="line">averageOfFunction(3， 4， square)</div><div class="line">averageOfFunction(3， 4， cube)</div></pre></td></tr></table></figure>
-<p>上面函数中我们对调用的闭包给了一个明确的名字，通常我们也可以使用闭包表达式来定义一个没有名字的闭包</p>
-<p>在swift中有多种定义闭包表达式的方式，在这里，我们会从最详细讲到最简单</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">averageOfFunction(3， 4， &#123;(x: Float) -&gt; Float in return x * x&#125;)</div></pre></td></tr></table></figure>
-<p><code>(x: Float) -&gt; Float</code>表示了闭包的类型(该闭包接受一个float值作为参数，并且返回一个float值)，<code>return x * x</code>是函数具体实现，紧跟在关键字<code>in</code>后面，这种完整写法估计要让人头疼，让我们简化下</p>
-<p>首先我们可以省略类型声明，因为能从averageOfFunction函数声明中推断出来(编译器已经知道averageOfFunction函数接收一个接受float和返回float值的闭包)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">averageOfFunction(3， 4， &#123;x in return x * x&#125;)</div></pre></td></tr></table></figure>
-<p>我们还可以忽略return关键字(注:单行表达式闭包可以通过省略 return 关键字来隐式返回单行表达式的结果)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">averageOfFunction(3， 4， &#123;x in x * x&#125;)</div></pre></td></tr></table></figure>
-<p>最后，我们还能通过使用默认参数名$0来忽略指定参数名(如果函数接受大于1个的参数，我们将使用$k来定义第(k-1)个参数，如$0，$1，$2)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">averageOfFunction(3， 4， &#123;$0 * $0&#125;)</div></pre></td></tr></table></figure>
-<p>接下来整篇我们将使用最后这种闭包表达式，实际编码中如果要求清晰明了，建议使用命名闭包。</p>
-<p>把闭包作为参数传递而非重复代码，这个编程方式极大地提高了代码的表达能力，同时避免了简单复制和黏贴代码带来的的错误</p>
-<h4 id="数组操作"><a href="#数组操作" class="headerlink" title="数组操作"></a>数组操作</h4><p>Swift的标准函数库中默认包含支持了三个高阶函数: map， filter 和 reduce，OC的NSAarry缺少这样的支持，但能通过<a href="https://github.com/stuartervine/OCTotallyLazy" target="_blank" rel="external">开源项目</a>达到一样的效果</p>
-<h5 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h5><p>map函数主要用来对每个数组元素通过某个方法进行转换 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[ x1， x2， ... ， xn].map(f) -&gt; [f(x1)， f(x2)， ... ， f(xn)]</div></pre></td></tr></table></figure>
-<p>现在我们有一个存储一些钱数的int数组，现在想要对数组中每个钱数后拼接一个“€”符号，从而得到一个新的字符串数组</p>
-<p>也就是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[10，20，45，32] -&gt; [&quot;10€&quot;，&quot;20€&quot;，&quot;45€&quot;，&quot;32€&quot;]</div></pre></td></tr></table></figure></p>
-<p>一般不优雅的方式就是创建一个新的空数组，然后遍历和转换数组每个元素，再把结果添加到新数组</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var stringsArray : [String] = [] //注意，在这里我们要声明数组的存储类型，否则会报类型错误</div><div class="line">for money in moneyArray &#123;</div><div class="line">stringsArray += &quot;\(money)$&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>操作并改变数组中的每个元素并创建一个新数组用来存储它们，这是很常见的做法，现在我们可以用map来试试</p>
-<p>在swift中 map 是array类声明的一个方法，其函数定义为<code>func map&lt;U&gt;(transform: (T) -&gt; U) -&gt; U[]</code>，也就意味着map接收一个命名为transform的函数， 该函数接受一个数组元素<code>T</code>然后返回一个转换后的元素<code>U</code>，map返回值为存储所有转换后对应元素<code>U</code>的数组</p>
-<p>在我们例子中<code>T</code>指代int，<code>U</code>指代string，所以我们需要传给map函数一个对应int转变为string的方法</p>
-<p>map使用:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">stringsArray = moneyArray.map(&#123;&quot;\($0)€&quot;&#125;)</div></pre></td></tr></table></figure></p>
-<p>其中<code>{&quot;\($0)€&quot;}</code>就是我们提供的对应int转变为string的闭包</p>
-<p>也可以对闭包中的参数具体命名:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">stringsArray = moneyArray.map(&#123;money in &quot;\(money)€&quot;&#125;)</div></pre></td></tr></table></figure>
-<p>上面代码如果你觉得很难了解，那可能是你不了解字符串插值，文档里面对字符串插值有这样一段描写:</p>
-<blockquote>
-<p>字符串插值是在字符串中插入常量，变量，字符，表达式从而生成一个新的字符串方法，插入字符串的每个值都要包含在一对括号中，且带着前缀反斜杠<code>/</code></p>
-</blockquote>
-<p><a href="">Swift String Apple Reference</a></p>
-<h5 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h5><p>filter函数主要用来从数组中选择出符合条件的元素</p>
-<p>还是使用上面的例子，现在我们需要写一个函数用来获取一个包含超过30€的钱数的数组</p>
-<p>比较naive的写法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var filteredArray : [Int] = [] </div><div class="line"></div><div class="line">for money in moneyArray &#123;</div><div class="line">if (money &gt; 30) &#123;</div><div class="line">filteredArray += [money]</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>很容易看出，比较核心的部分是<code>money &gt; 30</code>，用filter函数能简明扼要的实现相同的逻辑.</p>
-<p>在Swift中<code>filter</code> 是Array类中声明的一个方法， 其函数定义为 <code>func filter(includeElement: (T) -&gt; Bool) -&gt; T[]</code>，也就是接收一个返回true或者false 的 includeElement 方法，并对数组每个元素调用该方法， 只有返回true的元素才会存储到新数组</p>
-<p>过滤数组，我们只需使用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">filteredArray = moneyArray.filter(&#123;$0 &gt; 30&#125;)</div></pre></td></tr></table></figure>
-<p><code>{$0 &gt; 30}</code> 是我们提供给filter函数的 闭包</p>
-<h4 id="Reduce"><a href="#Reduce" class="headerlink" title="Reduce"></a>Reduce</h4><p>reduce方法是用来组合数组中的元素并生成一个新的元素</p>
-<p>继续使用上面的例子，这次我们要写一个对数组求和的方法<br>我们写的代码将得到结果: 107 (10 + 20 + 45 + 32)</p>
-<p>比较naive的做法:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var sum = 0</div><div class="line">for money in moneyArray &#123;</div><div class="line">sum = sum + money</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>现在我们看看数组的元素相乘<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var product = 1</div><div class="line">for money in moneyArray &#123;</div><div class="line">product = product * money</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>比较这两个函数，唯一不同的是初始值(sum的初始值为0，而product的为1)，以及运算符(sum的运算符为+，product的为*)</p>
-<p>Reduce可用来快速完整这类操作，通过指定一个初始值和一个用来组合元素的方法</p>
-<p>在Swift中<code>reduce</code> 是Array类中声明的一个方法， 其函数定义为  <code>func reduce(initial: U， combine: (U， T) -&gt; U) -&gt; U</code>，也就是接收一个<code>U</code>类型元素的初始值，以及一个把<code>U</code>类型元素和<code>T</code>类型元素组合为一个<code>U</code>类型的闭包， 最后整个数组会Reduce为一个<code>U</code>类型的元素并返回</p>
-<p>上面的求和例子中，<code>U</code>和<code>T</code>都是int型，初始值为0，combine闭包就是把两个int相加</p>
-<p>sum函数用reduce可以这样写</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sum = moneyArray.reduce(0，&#123;$0 + $1&#125;)</div></pre></td></tr></table></figure>
-<p>在Swift中运算符方法的计算结果作为单行的闭包返回值时，能直接省略参数名</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sum = moneyArray.reduce(0，+)</div></pre></td></tr></table></figure>
-<p>Reduce在三个函数中属于比较难理解的函数，要注意的是combine闭包接受的两个参数，第一个类型跟最终结果的类型一致，而第二个参数类型跟数组元素类型一致</p>
-<p>最后一点值得注意的是，在数据量比较大的时候，高阶函数实现会比传统实现更快，因为高阶函数能并行运行(即运行在多核上)，除非要实现更高性能的map，filter，reduce，否则可以一直使用它们以能获得更快的执行速度</p>
-<p>希望你们能明白使用 map， filter， reduce能改善代码的质量，但是也需要在合适的时候使用它们，不要期望它们能帮你解决任何问题，毕竟没有一劳永逸的方法</p>
-<h4 id="这里有些问题请你亲自尝试使用闭包解决"><a href="#这里有些问题请你亲自尝试使用闭包解决" class="headerlink" title="这里有些问题请你亲自尝试使用闭包解决"></a>这里有些问题请你亲自尝试使用闭包解决</h4><ul>
-<li><p>1:编写一个函数<code>applyTwice(f:(Float -&gt; Float)，x:Float) -&gt; Float</code>，以函数f和x为参数，然后用x参数调用f两次，即f(f(x))</p>
-</li>
-<li><p>2:编写一个函数<code>applyKTimes(f:(Float -&gt;Float)，x:Float，k:Int) -&gt; Float</code>，以函数f和x为参数，然后用x参数调用f函数k次</p>
-</li>
-<li><p>3:使用applyKTimes编写一个计算出x的k次幂的函数</p>
-</li>
-<li><p>4:给定一个user实例(user类拥有两个两个变量，age:Int和name:String)组成的数组，用map函数返回一个包含user中所有名字的数组</p>
-</li>
-<li><p>5:给定一个由字典(字典包含 “name” 和 “age”两个key)组成的数组，用map函数返回一个通过该数组元素字典中的name和age创建的user数组</p>
-</li>
-<li><p>6:给定一个Number数组，用filter函数选出奇数</p>
-</li>
-<li><p>7:给定一个字符串数组，用filter函数选出能转换为数字的字符</p>
-</li>
-<li><p>8:给定一个UIView数组，用filter函数选出UILabel的子类</p>
-</li>
-<li><p>9:用reduce函数把String数组中元素连接为一个字符串，其中每个元素用换行符分隔</p>
-</li>
-<li><p>10:用reduce函数从给定的Int数组中选出值最大的数</p>
-</li>
-<li><p>11:为何不能用reduce实现平均函数{$0 + $1 / Float(array.count)}</p>
-</li>
-<li><p>12:实现一个类似reduce的函数时，有什么变量可以使操作更简单</p>
-</li>
-<li><p>13:实现<a href="https://en.wikipedia.org/wiki/Church_encoding" target="_blank" rel="external">丘奇数</a>(问题比较难，且有多种解法)</p>
-</li>
-</ul>
-<p>敬请期待:-)</p>
-<p><a href="http://www.weheartswift.com/wp-content/uploads/2014/06/Clojures.zip" target="_blank" rel="external">示例代码</a></p>
-<p>如果你觉得该文章让你有收获，请尽情分享</p>
-
-          
+<p>先让我们看一些例子，来了解为啥闭包如此有用<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/04/21/higer-function/#more" rel="contents">
+              閱讀全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

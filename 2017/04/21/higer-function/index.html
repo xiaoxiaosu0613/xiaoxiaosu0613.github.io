@@ -101,7 +101,7 @@
 闭包介绍Swift强大的特性之一就是提供了简洁的一等函数/闭包语法，用来替代之前十分复杂的block语法，所以希望我们以后在Swift中不要再使用类似fuckingblocksyntax的语法
 闭包是一个自包含的代码块，能够在代码中传递和使用
 在本章节中，我们先将重点放在匿名定义的闭包">
-<meta property="og:updated_time" content="2017-04-25T08:45:57.000Z">
+<meta property="og:updated_time" content="2018-05-15T03:04:57.389Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="(译)高阶函数:Map，Filter，Reduce等">
 <meta name="twitter:description" content="原文: Higher Order Functions: Map,Filter,Reduce and more
@@ -351,8 +351,7 @@
 <p>闭包是一个自包含的代码块，能够在代码中传递和使用</p>
 <p>在本章节中，我们先将重点放在匿名定义的闭包上(即是内联函数且不具名)，也称作匿名闭包，我们可以像参数一样传递闭包，也可以把闭包当做返回值返回。闭包是极其强大的语言特性，能让我们编程更迅速，更简便，更少出错</p>
 <p>闭包/Block(两种叫法意义一样)广泛应用于Cocoa和Cocoa Touch 中，是iOS frameworks 的核心</p>
-<p>先让我们看一些例子，来了解为啥闭包如此有用</p>
-<p>现在我们需要两个函数.一个用来求两个数的平方和的平均值，一个用来求2个数的立方和的平均值，一般写法将如下</p>
+<p>先让我们看一些例子，来了解为啥闭包如此有用<br><a id="more"></a><br>现在我们需要两个函数.一个用来求两个数的平方和的平均值，一个用来求2个数的立方和的平均值，一般写法将如下</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">func square(a:Float) -&gt; Float &#123;</div><div class="line">return a * a</div><div class="line">&#125;</div><div class="line">func cube(a:Float) -&gt; Float &#123;</div><div class="line">return a * a * a</div><div class="line">&#125;</div><div class="line"></div><div class="line">func averageSumOfSquares(a:Float，b:Float) -&gt; Float &#123;</div><div class="line">return (square(a) + square(b)) / 2.0</div><div class="line">&#125;</div><div class="line"></div><div class="line">func averageSumOfCubes(a:Float，b:Float) -&gt; Float &#123;</div><div class="line">return (cube(a) + cube(b)) / 2.0</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>不难观察出，在averageSumOfSquares 和 averageSumOfCubes函数中唯一不同的就是分别调用square/cube方法。如果我们可以定义一个通用函数，这个函数接收两个数字参数和一个使用这两个数字来求平均值的函数参数，用来代替重复调用，这将会更好.这种时候我们可以使用闭包作为参数</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">func averageOfFunction(a:Float，b:Float，f:(Float -&gt; Float)) -&gt; Float &#123;</div><div class="line">return (f(a) + f(b)) / 2</div><div class="line">&#125;</div><div class="line"></div><div class="line">averageOfFunction(3， 4， square)</div><div class="line">averageOfFunction(3， 4， cube)</div></pre></td></tr></table></figure>
